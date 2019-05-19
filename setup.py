@@ -13,7 +13,16 @@ except ImportError:
     from distutils.extension import Extension
     print('Using distutils')
 
-from kivy_garden.cython_flower import __version__  # <-- change this
+# get the version, we cannot import _version, because that would import
+# __init__.py, which would import the cython-compiled code. But that has
+# not been compiled yet so it would fail. So import only _version.py
+filename = join(
+    dirname(__file__), 'kivy_garden', 'cython_flower', '_version.py')
+# change this                             ^^^^^^^^
+locals = {}
+with open(filename, "rb") as fh:
+    exec(compile(fh.read(), filename, 'exec'), globals(), locals)
+__version__ = locals['__version__']
 
 URL = 'https://github.com/kivy-garden/cython_flower'  # <-- change this
 
