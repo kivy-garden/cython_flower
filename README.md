@@ -1,8 +1,7 @@
 kivy-garden demo of cython flower
 ==================================
 
-[![Coverage Status](https://coveralls.io/repos/github/kivy-garden/cython_flower/badge.svg?branch=master)](https://coveralls.io/github/kivy-garden/cython_flower?branch=master)
-[![Build Status](https://travis-ci.com/kivy-garden/cython_flower.svg?branch=master)](https://travis-ci.com/kivy-garden/cython_flower)
+[![Github Build Status](https://github.com/kivy-garden/cython_flower/workflows/Garden%20flower/badge.svg)](https://github.com/kivy-garden/cython_flower/actions)
 
 A kivy garden flower that shows how to add flowers that requires cython compilation.
 
@@ -28,12 +27,12 @@ Or to install as editable (package is installed, but can be edited in its origin
 
     pip install -e .
 
-Usage
--------
+CI
+--
 
-```py
-do_something
-```
+Every push or pull request run the [GitHub Action](https://github.com/kivy-garden/flower/actions) CI.
+It tests the code on various OS and also generates wheels that can be released on PyPI upon a
+tag. Docs are also generated and uploaded to the repo as well as artifacts of the CI.
 
 TODO
 -------

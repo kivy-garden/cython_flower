@@ -5,13 +5,7 @@ from os.path import dirname, join, exists
 from os import path, environ
 import sys
 from distutils.command.build_ext import build_ext
-try:
-    from setuptools import setup, Extension
-    print('Using setuptools')
-except ImportError:
-    from distutils.core import setup
-    from distutils.extension import Extension
-    print('Using distutils')
+from setuptools import setup, Extension, find_packages
 
 # get the version, we cannot import _version, because that would import
 # __init__.py, which would import the cython-compiled code. But that has
@@ -60,7 +54,7 @@ with open(path.join(src_path, 'README.md'), encoding='utf-8') as f:
 
 
 class FlowerBuildExt(build_ext, object):
-    
+
     def __new__(cls, *a, **kw):
         # Note how this class is declared as a subclass of distutils
         # build_ext as the Cython version may not be available in the
@@ -99,6 +93,7 @@ class FlowerBuildExt(build_ext, object):
         for ext in self.extensions:
             ext.extra_compile_args = args
         super(FlowerBuildExt, self).build_extensions()
+
 
 cmdclass = {'build_ext': FlowerBuildExt}
 
@@ -145,15 +140,17 @@ setup(
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
     ],
     keywords='Kivy kivy-garden',
 
-    packages=['kivy_garden.cython_flower'],
+    packages=find_packages(),
     setup_requires=setup_requires,
     install_requires=[],
     extras_require={
-        'dev': ['pytest>=3.6', 'wheel', 'pytest-cov', 'pycodestyle'],
-        'travis': ['coveralls'],
+        'dev': ['pytest>=3.6', 'wheel', 'pytest-cov', 'pytest-asyncio',
+                'sphinx_rtd_theme'],
+        'ci': ['coveralls', 'pycodestyle'],
     },
     package_data={},
     data_files=[],
