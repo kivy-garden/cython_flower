@@ -6,7 +6,7 @@ yum -y install gcc gcc-c++ git make pkgconfig
 cd /io
 for PYBIN in /opt/python/*3*/bin; do
     if [[ $PYBIN != *"34"* ]]; then
-        "${PYBIN}/pip" install --upgrade setuptools pip wheel cython
+        "${PYBIN}/pip" install --upgrade setuptools pip cython
         "${PYBIN}/pip" install kivy[base] --pre --extra-index-url https://kivy.org/downloads/simple/
         "${PYBIN}/pip" wheel --no-deps .
     fi
