@@ -3,7 +3,7 @@ Demo flower using cython
 =========================
 
 Defines the Kivy garden :class:`CythonFlowerLabel` class which is
-the widget provided by the demo cython flower. 
+the widget provided by the demo cython flower.
 """
 
 from kivy.uix.label import Label

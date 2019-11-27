@@ -110,7 +110,8 @@ mods = ['cython_flower/_compute']  # <-- change this
 
 ext_modules = [Extension(
     'kivy_garden.' + src_file.replace('/', '.'),
-    sources=[join(src_path, 'kivy_garden', *(src_file + mod_suffix).split('/'))],
+    sources=[join(
+        src_path, 'kivy_garden', *(src_file + mod_suffix).split('/'))],
     libraries=libraries,
     include_dirs=include_dirs,
     library_dirs=library_dirs)
