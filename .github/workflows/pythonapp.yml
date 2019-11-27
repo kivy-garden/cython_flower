@@ -31,8 +31,6 @@ jobs:
       uses: actions/setup-python@v1
       with:
         python-version: 3.x
-    - name: Make sdist
-      run: python3 setup.py sdist --formats=gztar
     - name: Install dependencies
       run: |
         sudo apt update
@@ -44,11 +42,6 @@ jobs:
         python3 -m pip install kivy[base] --pre --extra-index-url https://kivy.org/downloads/simple/
     - name: Install flower
       run: python3 -m pip install -e .[dev,ci] --extra-index-url https://kivy-garden.github.io/simple/
-    - name: Upload wheels as artifact
-      uses: actions/upload-artifact@master
-      with:
-        name: wheels
-        path: dist
     - name: Test with pytest
       run: |
         flower_name=$(python3 -c "print('$GITHUB_REPOSITORY'.split('/')[-1])")
@@ -62,6 +55,8 @@ jobs:
         uses: actions/setup-python@v1
         with:
           python-version: 3.x
+      - name: Make sdist
+        run: python3 setup.py sdist --formats=gztar
       - name: Make wheels
         run: |
           chmod +x .ci/manylinux_wheels.sh
@@ -81,7 +76,7 @@ jobs:
           files: dist/*
           draft: true
 
-  windows_test:
+  windows_wheels_test:
     runs-on: windows-latest
     strategy:
       matrix:
@@ -121,6 +116,44 @@ jobs:
       run: |
         $flower_name=(python -c "print('$GITHUB_REPOSITORY'.split('/')[-1])")
         python -m pytest --cov=kivy_garden.$flower_name --cov-report term --cov-branch
+
+  osx_wheels:
+    runs-on: macOS-latest
+    strategy:
+      matrix:
+        python: [ '3.5', '3.6', '3.7', '3.8' ]
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set up Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install dependencies
+        run: |
+          python3 -m pip install --upgrade pip virtualenv wheel setuptools
+          python3 -m pip install kivy[full] --pre --extra-index-url  https://kivy.org/downloads/simple/
+          python3 -m pip install --upgrade delocate
+      - name: Install flower
+        run: python3 -m pip install -e .[dev,ci] --extra-index-url https://kivy-garden.github.io/simple/
+      - name: Make wheel
+        run: python3 setup.py bdist_wheel
+      - name: Delocate wheel
+        run: |
+          delocate-wheel dist/*.whl
+          delocate-addplat --rm-orig -x 10_9 -x 10_10 dist/*.whl
+      - name: Upload wheels as artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: wheels
+          path: dist
+      - name: Upload to GitHub Release
+        uses: softprops/action-gh-release@78c309ef59fdb9557cd6574f2e0be552936ed728
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          files: dist/*
+          draft: true
 
   docs:
     runs-on: ubuntu-18.04

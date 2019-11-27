@@ -5,6 +5,8 @@ kivy-garden demo of cython flower
 
 A kivy garden flower that shows how to add flowers that requires cython compilation.
 
+See https://kivy-garden.github.io/cython_flower/ for the rendered flower docs.
+
 Please see the garden [instructions](https://kivy-garden.github.io) for how to use kivy garden flowers.
 
 Flower information
