@@ -5,7 +5,7 @@ from os.path import dirname, join, exists
 from os import path, environ
 import sys
 from distutils.command.build_ext import build_ext
-from setuptools import setup, Extension, find_packages
+from setuptools import setup, Extension, find_namespace_packages
 
 # get the version, we cannot import _version, because that would import
 # __init__.py, which would import the cython-compiled code. But that has
@@ -145,7 +145,7 @@ setup(
     ],
     keywords='Kivy kivy-garden',
 
-    packages=find_packages(),
+    packages=find_namespace_packages(include=['kivy_garden.*']),
     setup_requires=setup_requires,
     install_requires=[],
     extras_require={

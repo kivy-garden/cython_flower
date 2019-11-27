@@ -61,6 +61,7 @@ jobs:
         run: |
           chmod +x .ci/manylinux_wheels.sh
           docker run --rm -v "$(pwd):/io" "$DOCKER_IMAGE" "/io/.ci/manylinux_wheels.sh"
+          rm "dist/*-linux*"
           ls dist
       - name: Upload wheels as artifact
         uses: actions/upload-artifact@master
