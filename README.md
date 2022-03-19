@@ -2,6 +2,7 @@ kivy-garden demo of cython flower
 ==================================
 
 [![Github Build Status](https://github.com/kivy-garden/cython_flower/workflows/Garden%20flower/badge.svg)](https://github.com/kivy-garden/cython_flower/actions)
+[![Coverage Status](https://coveralls.io/repos/github/kivy-garden/cython_flower/badge.svg?branch=master)](https://coveralls.io/github/kivy-garden/cython_flower?branch=master)
 
 A kivy garden flower that shows how to add flowers that requires cython compilation.
 
